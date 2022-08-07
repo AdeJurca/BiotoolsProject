@@ -4,7 +4,7 @@ from typing import List
 import requests as requests
 
 from models.Tool import Tool
-
+import spdx_license_list
 
 def get_by_name(value):
     with open("./data/data.json") as file:
@@ -18,7 +18,7 @@ def get_by_name(value):
 
 
 def get_all():
-    with open("../data/data.json") as file:
+    with open("./data/data.json") as file:
         data = json.load(file)
         tools: List[Tool] = [Tool(**item) for item in data]
         for tool in tools:
@@ -33,4 +33,5 @@ def get_by_url(value):
 
 if __name__ == "__main__":
     get_by_name("AEGeAn")
+    # get_all()
     # get_by_url("https://bio.tools/api/clustalw2_ebi?format=json")

@@ -5,6 +5,7 @@ from typing import List, Optional, Any
 import pydantic
 from pydantic import BaseModel
 from models import Function, OtherID, Topic, Publication
+import spdx_license_list
 
 
 class CustomError(Exception):
@@ -29,6 +30,7 @@ class Tool(BaseModel):
     topic: List[Topic.Topic]
     operatingSystem: List[str]
     language: List[str]
+    license: str
     collectionID: List[str]
     elixirPlatform: List[str]
     elixirNode: List[str]
@@ -41,34 +43,41 @@ class Tool(BaseModel):
         return json.dumps(self, default=lambda o: o.__dict__,
                           sort_keys=False, indent=4)
 
-    @pydantic.validator("name")
+    @pydantic.validator('name')
     @classmethod
     def name_validator(cls, value):
         if len(value) == 0:
-            raise CustomError(value=value, message="Name cannot be empty")
+            raise CustomError(value=value, message='Name cannot be empty')
         if len(value) > 20:
-            raise CustomError(value=value, message="Name is to long")
-        else:
-            return value
+            raise CustomError(value=value, message='Name is to long')
 
-    @pydantic.validator("description")
+        return value
+
+    @pydantic.validator('description')
     @classmethod
     def description_validator(cls, value):
         if len(value) > 500:
-            raise CustomError(value=value, message="Description is to long")
+            raise CustomError(value=value, message='Description is to long')
         if len(value) < 5:
-            raise CustomError(value=value, message="Description is to short")
-        else:
-            return value
+            raise CustomError(value=value, message='Description is to short')
 
-    @pydantic.validator("version")
+        return value
+
+    @pydantic.validator('version')
     @classmethod
     def version_validator(cls, value):
         for v in value:
             if any(p in v for p in string.whitespace):
-                raise CustomError(value=value, message="Version number must not contain whitespaces")
-            if any(p in v for p in string.punctuation.replace(".", "")):
-                raise CustomError(value=value, message="Version number must not contain special characters")
-        else:
+                raise CustomError(value=value, message='Version number must not contain whitespaces')
+            if any(p in v for p in string.punctuation.replace('.', '')):
+                raise CustomError(value=value, message='Version number must not contain special characters')
+
             return value
 
+    @pydantic.validator('license')
+    @classmethod
+    def license_validator(cls, value):
+        if value not in spdx_license_list.LICENSES:
+            raise CustomError(value=value, message=f'{value} is not a valid license')
+
+        return value
