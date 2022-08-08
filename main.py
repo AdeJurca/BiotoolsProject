@@ -4,7 +4,7 @@ from typing import List
 import requests as requests
 
 from models.Tool import Tool
-import spdx_license_list
+
 
 def get_by_name(value):
     with open("./data/data.json") as file:
@@ -32,6 +32,6 @@ def get_by_url(value):
 
 
 if __name__ == "__main__":
-    get_by_name("AEGeAn")
+    # get_by_name("AEGeAn")
     # get_all()
-    # get_by_url("https://bio.tools/api/clustalw2_ebi?format=json")
+    get_by_url("https://bio.tools/api/jaspar?format=json")
