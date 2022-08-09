@@ -23,10 +23,10 @@ class Tool(BaseModel):
     biotoolsID: str
     biotoolsCURIE: str
     version: List[str]
-    otherID: List[OtherID.OtherID]
+    otherID: Optional[List[OtherID.OtherID]] = []
     relation: List[str]
     function: List[Function.Function]
-    toolType: List[str]
+    toolType: Optional[List[str]] = [] #ar trebuie default lista goala peste tot
     topic: List[Topic.Topic]
     operatingSystem: List[str]
     language: List[str]
@@ -38,10 +38,11 @@ class Tool(BaseModel):
     download: List[Any]
     publication: Optional[List[Publication.Publication]]
     credit: List[Any]
+    confidence_flag: str=None
 
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__,
-                          sort_keys=False, indent=4)
+    #def toJSON(self):
+        #return json.dumps(self, default=lambda o: o.__dict__,
+                          #sort_keys=False, indent=4)
 
     @pydantic.validator('name')
     @classmethod
