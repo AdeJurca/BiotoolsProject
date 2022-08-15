@@ -49,10 +49,10 @@ def get_tool_by_url(url: str) -> Tool:
 
 
 if __name__ == "__main__":
-    tool = get_by_name("JASPAR")
-    print("Tool is: ")
-    print(tool)
-    # t = get_all_tools()
-    # print(t)
+    # tool = get_by_name("JASPAR")
+    # print("Tool is: ")
+    # print(tool)
+    t = get_all_tools()
+    print(t)
     # tool = get_tool_by_url("https://bio.tools/api/jaspar?format=json")
     # print("Printing tool from main: ", tool)

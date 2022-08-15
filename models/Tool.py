@@ -1,5 +1,5 @@
 import string
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Set
 
 import pydantic
 import spdx_license_list
@@ -11,6 +11,7 @@ from models.OtherID import OtherID
 from models.Publication import Publication
 from models.Topic import Topic
 from models.Credit import Credit
+
 
 class CustomError(Exception):
 
@@ -30,10 +31,10 @@ class Tool(BaseModel):
     otherID: Optional[List[OtherID]] = []
     relation: Optional[List[str]]
     function: List[Function] = []
-    toolType: Optional[List[str]] = []
+    toolType: Set[str]
     topic: List[Topic]
-    operatingSystem: Optional[List[str]] = []
-    language: Optional[List[str]] = []
+    operatingSystem: Set[str] = []
+    language: Set[str] = []
     license: str
     collectionID: Optional[List[str]] = []
     elixirPlatform: Optional[List[str]] = []
@@ -45,9 +46,9 @@ class Tool(BaseModel):
     confidence_flag: Optional[str] = None
     documentation: Optional[List[Documentation]] = []
 
-    #def toJSON(self):
-        #return json.dumps(self, default=lambda o: o.__dict__,
-                          #sort_keys=False, indent=4)
+    # def toJSON(self):
+    # return json.dumps(self, default=lambda o: o.__dict__,
+    # sort_keys=False, indent=4)
 
     @pydantic.validator('name')
     @classmethod
@@ -96,3 +97,39 @@ class Tool(BaseModel):
             raise CustomError(value=value, message=f'{value} is not a valid license')
 
         return value
+
+    @pydantic.validator('toolType')
+    @classmethod
+    def toolType_validator(cls, values):
+        types: Set[str] = {"Bioinformatics portal", "Command-line tool", "Database portal",
+                              "Desktop Application", "Library", "Ontology", "Plug-in", "Script", "SPARQL endpoint",
+                              "Suite", 'Web Application', "Web API", "Webservice", "Workbench", "Workflow"}
+        for value in values:
+            if value.lower() not in (s.lower() for s in types):
+                raise CustomError(value=value, message=f'{value} This field must contain one of the toolType suggested')
+        return values
+
+    @pydantic.validator('operatingSystem')
+    @classmethod
+    def operatingSystem_validator(cls, values):
+        systems: Set[str] = {"Mac", "Linux", "Windows"}
+        for value in values:
+            if value.lower() not in (s.lower() for s in systems):
+                raise CustomError(value=value, message=f'{value} This field must contain one of the OS suggested')
+        return values
+
+    @pydantic.validator('language')
+    @classmethod
+    def language_validator(cls, values):
+        languages: Set[str] = {"ActionScript", "Ada", "AppleScript", "Assembly Language", "AWK", "Bash", "C", "C#",
+                               "C++", "COBOL", "ColdFusion", "CWL", "D", "Delphi", "Dylan", "Eiffel", "Elm", "Forth",
+                               "Fortran", "Groovy", "Haskell", "Iacrus", "Java", "JavaScript", "JSP", "Julia",
+                               "LabVIEW", "Lisp", "Lua", "Maple", "Mathematica", "MATLAB", "MLXTRAN", "NMTRAN", "OCaml",
+                               "Pascal", "Perl", "PHP", "Prolog", "PyMOL", "Python", "R", "Racket", "REXX", "Ruby",
+                               "SAS", "Scala", "Scheme", "Shell", "Smalltalk", "SQL", "Turing", "Verilog", "VHDL",
+                               "Visual Basic", "XAML", "Other"}
+        for value in values:
+            if value.lower() not in (s.lower() for s in languages):
+                raise CustomError(value=value, message=f'{value} This field must contain one of the languages suggested')
+        return values
+

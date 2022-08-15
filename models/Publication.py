@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Publication(BaseModel):
-    doi: str
+    doi: Optional[str]
     pmid: Optional[str]
     pmcid: Optional[str]
     type: Optional[List[str]]
