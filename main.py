@@ -1,43 +1,45 @@
 import json
-from typing import List
+from typing import List, Dict
 
 import requests as requests
 
 from models.Tool import Tool
 
 
-def get_by_name(value: str) -> Tool:
+def get_by_name(tool_name: str) -> Tool:
     """
     display a tool from data.json local file by giving the name of the tool as paramter
     """
     with open("./data/data.json", 'r') as file:
-        data = json.load(file)
+        data: List[Dict] = json.load(file)
         tools: List[Tool] = []
         for item in data:
             tools.append(Tool(**item))
         for tool in tools:
-            if tool.name == value:
+            if tool.name == tool_name:
                 print(tool.json())
                 return tool
-    print(f"No tool found by name:  {value}")
+    print(f"No tool found by name:  {tool_name}")
+    return None
 
 
 def get_all_tools() -> List[Tool]:
     """
-    display the list of tools from data.json
+    returns all the Tool objects from the data.json file
     """
     with open("./data/data.json") as file:
-        data = json.load(file)
+        data: List[Dict] = json.load(file)
         tools: List[Tool] = []
-        for item in data:
-            tools.append(Tool(**item))
+        for one_element in data:
+            tool: Tool = Tool(**one_element)
+            tools.append(tool)
         print("---")
         for tool in tools:
             print(tool.json())
         return tools
 
 def get_tool_by_url(url: str) -> Tool:
-    """display the in json format from the bio.tools url of the tool"""
+    """return the Tool object from a bio.tools API url """
     response = requests.get(url)
     dict_obj = json.loads(response.text)
     tool: Tool = Tool(**dict_obj)
@@ -47,7 +49,8 @@ def get_tool_by_url(url: str) -> Tool:
 
 
 if __name__ == "__main__":
-    tool = get_by_name("AEGeAn")
+    tool = get_by_name("adelina")
+    print("Tool is: ")
     print(tool)
     # t = get_all_tools()
     # print(t)

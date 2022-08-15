@@ -1,11 +1,15 @@
 import string
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 import pydantic
-from pydantic import BaseModel
-from models import Function, OtherID, Topic, Publication
 import spdx_license_list
+from pydantic import BaseModel
 
+from models.Documentation import Documentation
+from models.Function import Function
+from models.OtherID import OtherID
+from models.Publication import Publication
+from models.Topic import Topic
 
 class CustomError(Exception):
 
@@ -18,26 +22,27 @@ class CustomError(Exception):
 class Tool(BaseModel):
     name: str
     description: str
-    homepage: str
-    biotoolsID: str
-    biotoolsCURIE: str
+    homepage: Optional[str]
+    biotoolsID: Optional[str]
+    biotoolsCURIE: Optional[str]
     version: List[str]
-    otherID: Optional[List[OtherID.OtherID]] = []
-    relation: List[str]
-    function: List[Function.Function] = []
-    toolType: Optional[List[str]] = [] #ar trebuie default lista goala peste tot
-    topic: List[Topic.Topic]
-    operatingSystem: List[str] = []
-    language: List[str] = []
+    otherID: Optional[List[OtherID]] = []
+    relation: Optional[List[str]]
+    function: List[Function] = []
+    toolType: Optional[List[str]] = []
+    topic: List[Topic]
+    operatingSystem: Optional[List[str]] = []
+    language: Optional[List[str]] = []
     license: str
-    collectionID: List[str] = []
-    elixirPlatform: List[str] = []
-    elixirNode: List[str] = []
-    link: List[str] = []
-    download: List[str] = []
-    publication: Optional[List[Publication.Publication]] = []
-    credit: List[str] = []
-    confidence_flag: str = None
+    collectionID: Optional[List[str]] = []
+    elixirPlatform: Optional[List[str]] = []
+    elixirNode: Optional[List[str]] = []
+    link: List[Dict]
+    download: List[Dict]
+    publication: Optional[List[Publication]] = []
+    credit: List[Dict]
+    confidence_flag: Optional[str] = None
+    documentation: Optional[List[Documentation]] = []
 
     #def toJSON(self):
         #return json.dumps(self, default=lambda o: o.__dict__,
