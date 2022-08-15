@@ -10,6 +10,7 @@ from models.Function import Function
 from models.OtherID import OtherID
 from models.Publication import Publication
 from models.Topic import Topic
+from models.Credit import Credit
 
 class CustomError(Exception):
 
@@ -40,7 +41,7 @@ class Tool(BaseModel):
     link: List[Dict]
     download: List[Dict]
     publication: Optional[List[Publication]] = []
-    credit: List[Dict]
+    credit: List[Credit]
     confidence_flag: Optional[str] = None
     documentation: Optional[List[Documentation]] = []
 
