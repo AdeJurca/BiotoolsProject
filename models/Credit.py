@@ -4,13 +4,14 @@ from pydantic import BaseModel
 
 
 class Credit(BaseModel):
-    name: str
-    email: str
-    url: str
+    name: Optional[str]
+    email: Optional[str]
+    url: Optional[str]
     orcidid: Optional[str]
     gridid: Optional[str]
     rorid: Optional[str]
     fundrefid: Optional[str]
-    typeEntity: List[str]
-    typeRole: str
+    typeEntity: str
+    typeRole: List[str]
     note: Optional[str]
+
