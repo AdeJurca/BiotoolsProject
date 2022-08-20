@@ -4,6 +4,6 @@ from pydantic import BaseModel
 
 
 class Operation(BaseModel):
-    uri: Optional[str]
+    uri: str
     term: Optional[str]
 

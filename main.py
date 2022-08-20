@@ -1,37 +1,58 @@
 import json
-from typing import List
+from typing import List, Dict
 
 import requests as requests
 
 from models.Tool import Tool
-import spdx_license_list
 
-def get_by_name(value):
-    with open("./data/data.json") as file:
-        data = json.load(file)
-        tools: List[Tool] = [Tool(**item) for item in data]
+
+def get_by_name(tool_name: str) -> Tool:
+    """
+    display a tool from data.json local file by giving the name of the tool as paramter
+    """
+    with open("./data/data.json", 'r') as file:
+        data: List[Dict] = json.load(file)
+        tools: List[Tool] = []
+        for item in data:
+            tools.append(Tool(**item))
         for tool in tools:
-            if tool.name == value:
-                print(tool.toJSON())
-                return
-    print(f"No tool found by name:  {value}")
+            if tool.name == tool_name:
+                print(tool.json())
+                return tool
+    print(f"No tool found by name:  {tool_name}")
+    return None
 
 
-def get_all():
+def get_all_tools() -> List[Tool]:
+    """
+    returns all the Tool objects from the data.json file
+    """
     with open("./data/data.json") as file:
-        data = json.load(file)
-        tools: List[Tool] = [Tool(**item) for item in data]
+        data: List[Dict] = json.load(file)
+        tools: List[Tool] = []
+        for one_element in data:
+            tool: Tool = Tool(**one_element)
+            tools.append(tool)
+        print("---")
         for tool in tools:
-            print(tool.toJSON())
+            print(tool.json())
+        return tools
 
-
-def get_by_url(value):
-    response = requests.get(value)
-    tool: Tool = Tool(**json.loads(response.text))
-    print(tool.toJSON())
+def get_tool_by_url(url: str) -> Tool:
+    """return the Tool object from a bio.tools API url """
+    response = requests.get(url)
+    dict_obj = json.loads(response.text)
+    tool: Tool = Tool(**dict_obj)
+    print(tool.json())
+    print(tool)
+    return tool
 
 
 if __name__ == "__main__":
-    get_by_name("AEGeAn")
-    # get_all()
-    # get_by_url("https://bio.tools/api/clustalw2_ebi?format=json")
+    # tool = get_by_name("JASPAR")
+    # print("Tool is: ")
+    # print(tool)
+    t = get_all_tools()
+    print(t)
+    # tool = get_tool_by_url("https://bio.tools/api/jaspar?format=json")
+    # print("Printing tool from main: ", tool)

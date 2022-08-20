@@ -1,5 +1,5 @@
 from typing import List, Any, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, root_validator
 
 from models.Operation import Operation
 
@@ -10,3 +10,4 @@ class Function(BaseModel):
     output: Optional[List[Any]]
     note: Optional[str]
     cmd: Optional[str]
+
