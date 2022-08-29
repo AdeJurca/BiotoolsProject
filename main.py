@@ -74,4 +74,4 @@ if __name__ == "__main__":
     # print(t)
     # tool = get_tool_by_url("https://bio.tools/api/jaspar?format=json")
     # print("Printing tool from main: ", tool)
-    print(change_tool_name("aegean", "test"))
+    print(change_tool_name("test", "aegean"))
