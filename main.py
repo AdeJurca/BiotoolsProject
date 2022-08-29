@@ -52,7 +52,7 @@ def change_tool_name(old_name: str, new_name: str) -> Tool | None:
     """change the tool name by giving the old name"""
     tool = get_by_name(old_name)
     if tool is None:
-        return
+        return tool
     with open("./data/data.json", 'r', encoding='utf-8') as file:
         data: List[Dict] = json.load(file)
         tool.name = new_name
@@ -63,7 +63,7 @@ def change_tool_name(old_name: str, new_name: str) -> Tool | None:
                 file.write(json.dumps(data, ensure_ascii=False, indent=2))
                 file.close()
                 return tool
-    return
+    return tool
 
 
 if __name__ == "__main__":
@@ -74,4 +74,4 @@ if __name__ == "__main__":
     # print(t)
     # tool = get_tool_by_url("https://bio.tools/api/jaspar?format=json")
     # print("Printing tool from main: ", tool)
-    print(change_tool_name("test", "aegean"))
+    print(change_tool_name("aegean", "test"))

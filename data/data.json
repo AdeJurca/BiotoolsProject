@@ -1,6 +1,6 @@
 [
   {
-    "name": "aegean",
+    "name": "test",
     "description": "The AEGeAn Toolkit provides a bundle of software tools for evaluating gene structure annotations and genome organization.",
     "homepage": "http://brendelgroup.github.io/AEGeAn/",
     "biotoolsID": "aegean",
